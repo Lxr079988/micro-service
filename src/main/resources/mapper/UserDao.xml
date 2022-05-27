@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jim.microservice.dao.UserDao">
+
+    <resultMap type="com.jim.microservice.entity.User" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userNameCn" column="user_name_cn" jdbcType="VARCHAR"/>
+        <result property="userNameEn" column="user_name_en" jdbcType="VARCHAR"/>
+        <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
+        <result property="departmentId" column="department_id" jdbcType="VARCHAR"/>
+        <result property="departmentName" column="department_name" jdbcType="VARCHAR"/>
+        <result property="positionName" column="position_name" jdbcType="VARCHAR"/>
+        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="updateUserId" column="update_user_id" jdbcType="VARCHAR"/>
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user_center.user(user_id, user_name, user_name_cn, user_name_en, user_email, department_id,
+        department_name, position_name, last_login_time, status, update_user_id, create_user_id, update_time,
+        create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.userName}, #{entity.userNameCn}, #{entity.userNameEn}, #{entity.userEmail},
+            #{entity.departmentId}, #{entity.departmentName}, #{entity.positionName}, #{entity.lastLoginTime},
+            #{entity.status}, #{entity.updateUserId}, #{entity.createUserId}, #{entity.updateTime},
+            #{entity.createTime})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user_center.user(user_id, user_name, user_name_cn, user_name_en, user_email, department_id,
+        department_name, position_name, last_login_time, status, update_user_id, create_user_id, update_time,
+        create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.userName}, #{entity.userNameCn}, #{entity.userNameEn}, #{entity.userEmail},
+            #{entity.departmentId}, #{entity.departmentName}, #{entity.positionName}, #{entity.lastLoginTime},
+            #{entity.status}, #{entity.updateUserId}, #{entity.createUserId}, #{entity.updateTime},
+            #{entity.createTime})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , user_name = values(user_name) , user_name_cn = values(user_name_cn) , user_name_en =
+        values(user_name_en) , user_email = values(user_email) , department_id = values(department_id) , department_name
+        = values(department_name) , position_name = values(position_name) , last_login_time = values(last_login_time) ,
+        status = values(status) , update_user_id = values(update_user_id) , create_user_id = values(create_user_id) ,
+        update_time = values(update_time) , create_time = values(create_time)
+    </insert>
+    <select id="selectAll" resultType="com.jim.microservice.entity.User">
+        select
+        *
+        from user
+    </select>
+    <select id="selectPage" resultType="com.jim.microservice.entity.User">
+        select
+        *
+        from user
+    </select>
+
+</mapper>
+

@@ -1,0 +1,50 @@
+# 服务端口配置
+server:
+  port: 8099
+
+spring:
+  datasource:
+    dynamic:
+      primary: productCenter # 配置默认数据库
+      datasource:
+        userCenter: # 数据源1配置
+          url: jdbc:mysql://localhost:3306/user_center?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=GMT%2B8
+          username: root
+          password: password
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        productCenter: # 数据源2配置
+          url: jdbc:mysql://localhost:3306/product_center?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=GMT%2B8
+          username: root
+          password: password
+          driver-class-name: com.mysql.cj.jdbc.Driver
+      durid:
+        initial-size: 1
+        max-active: 20
+        min-idle: 1
+        max-wait: 60000
+  autoconfigure:
+    # 去除druid配置。是否需要，根据druid连接池的类型。如果druid连接池为starter类型，则需要排除。否则，不需要。
+    exclude:  com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+
+logging:
+  config:
+    classpath: logback-prd.xml
+  level:
+    com:
+      etekcity:
+        productmanagement: info
+
+# mybatis log插件打印sql日志需要配置该参数
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# pagehelper分页接口设置
+pagehelper:
+  # helperDialect ：指定数据库，可以不配置，pagehelper插件会自动检测数据库的类型。
+  helperDialect: mysql
+  # resonable ：分页合理化参数默认false，当该参数设置为true 时，pageNum <= 0 时，默认显示第一页，pageNum 超过 pageSize 时，显示最后一页。
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
